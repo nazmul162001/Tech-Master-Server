@@ -27,8 +27,8 @@ const productSchema = new Schema<IProduct>(
       },
       required: true,
     },
-    individualRating: { type: Number, required: true },
-    averageRating: { type: Number, required: true },
+    individualRating: { type: Number },
+    averageRating: { type: Number },
     reviews: [
       {
         name: { type: String, required: true },

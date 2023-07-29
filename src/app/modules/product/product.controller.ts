@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { Document } from 'mongoose';
 import { RequestHandler } from 'express-serve-static-core'
 import httpStatus from 'http-status'
 import catchAsync from '../../../shared/catchAsync'
@@ -11,7 +12,7 @@ import {
   productFilterableField,
 } from './product.constant'
 import { paginationFields } from '../../../constants/pagination'
-import { IProduct } from './product.interface'
+import { IProduct, IReview } from './product.interface'
 
 // create a new product
 const createProduct: RequestHandler = catchAsync(
@@ -70,42 +71,42 @@ const getSingleProduct: RequestHandler = catchAsync(
   }
 )
 
-// // delete user
-// const deleteUser: RequestHandler = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const id = req.params.id
-//     await userService.deleteUser(id)
+// Add product review
+const addProductReview: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const productId = req.params.id;
+    const { name, individualRating, comment } = req.body;
 
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User deleted successfully!',
-//     })
-//   }
-// )
+    const product = await productService.getSingleProduct(productId);
 
-// // update user
-// const updateUser: RequestHandler = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const id = req.params.id
-//     const updateData = req.body
-//     const updatedUser = await userService.updateUser(id, updateData)
+    if (!product) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+    }
 
-//     if (!updatedUser) {
-//       throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
-//     }
+    // Make sure product.reviews is defined before pushing the new review
+    if (!product.reviews) {
+      product.reviews = [];
+    }
 
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User updated successfully!',
-//       data: updatedUser,
-//     })
-//   }
-// )
+    // Add the review to the product's reviews array
+    const newReview: IReview = { name , individualRating, comment };
+    product.reviews.push(newReview);
+
+    // Save the updated product with the new review
+    await productService.addProductReview(productId, newReview);
+
+    sendResponse<IProduct>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Review added successfully!',
+      data: product,
+    });
+  }
+);
 
 export const ProductController = {
   createProduct,
   getProducts,
   getSingleProduct,
+  addProductReview
 }

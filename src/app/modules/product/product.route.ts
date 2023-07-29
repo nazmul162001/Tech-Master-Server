@@ -4,6 +4,7 @@ const router = express.Router()
 
 // create new product
 router.post('/', ProductController.createProduct)
+router.post('/:id/reviews', ProductController.addProductReview);
 router.get('/', ProductController.getProducts)
 router.get('/:id', ProductController.getSingleProduct)
 // router.delete('/:id', ProductController.deleteUser)

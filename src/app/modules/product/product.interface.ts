@@ -30,11 +30,11 @@ name: string;
 category: ICategories;
 image: string;
 price: number;
-status: IStatus;
+status?: IStatus;
 description: string;
 keyFeatures: IKeyFeature;
-individualRating: number;
-averageRating: number;
+individualRating?: number;
+averageRating?: number;
 reviews?: IReview[];
 };
 
@@ -71,13 +71,18 @@ Resolution: string;
 Voltage: string;
 };
 
-export type IReview = [
-  {
+// export type IReview = [
+//   {
+//     name: string;
+//     individualRating: number;
+//     comment: string;
+//     date: string;
+//   },
+//   ];
+  export type IReview = {
     name: string;
     individualRating: number;
     comment: string;
-    date: string;
-  },
-  ];
+  }
 
   export type ProductModel = Model<IProduct, Record<string, unknown>>;
