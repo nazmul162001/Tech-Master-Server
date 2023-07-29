@@ -34,7 +34,7 @@ const productSchema = new Schema<IProduct>(
         name: { type: String, required: true },
         individualRating: { type: Number, required: true },
         comment: { type: String, required: true },
-        date: { type: String, required: true },
+        date: { type: Date, required: true },
       },
     ],
   },

@@ -1,6 +1,11 @@
 import ApiError from '../../../errors/ApiError'
-import { Document, Types } from 'mongoose';
-import { IPriceFilters, IProduct, IProductFilter, IReview } from './product.interface'
+import { Document, Types } from 'mongoose'
+import {
+  IPriceFilters,
+  IProduct,
+  IProductFilter,
+  IReview,
+} from './product.interface'
 import httpStatus from 'http-status'
 import User from './product.model'
 import { IPaginationOptions } from '../../../interfaces/paginations'
@@ -116,7 +121,9 @@ const getProducts = async (
 }
 
 // get single user
-const getSingleProduct = async (productId: string): Promise<IProduct | null> => {
+const getSingleProduct = async (
+  productId: string
+): Promise<IProduct | null> => {
   try {
     const product = await Product.findById(productId)
     return product
@@ -131,32 +138,33 @@ const addProductReview = async (
   review: IReview
 ): Promise<void> => {
   try {
-    const product = await Product.findById(productId).lean().exec();
+    const product = await Product.findById(productId).lean().exec()
 
     if (!product) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+      throw new ApiError(httpStatus.NOT_FOUND, 'Product not found')
     }
 
     // Make sure product.reviews is defined before pushing the new review
     if (!product.reviews) {
-      product.reviews = [];
+      product.reviews = []
     }
 
     // Add the review to the product's reviews array
-    product.reviews.push(review);
+    review.date = new Date()
+    product.reviews.push(review)
 
     // Save the updated product with the new review
-    await Product.findByIdAndUpdate(productId, { reviews: product.reviews }).exec();
+    await Product.findByIdAndUpdate(productId, {
+      reviews: product.reviews,
+    }).exec()
   } catch (error) {
-    throw error;
+    throw error
   }
-};
-
-
+}
 
 export const productService = {
   createProduct,
   getProducts,
   getSingleProduct,
-  addProductReview
+  addProductReview,
 }

@@ -83,6 +83,7 @@ Voltage: string;
     name: string;
     individualRating: number;
     comment: string;
+    date?: Date;
   }
 
   export type ProductModel = Model<IProduct, Record<string, unknown>>;
