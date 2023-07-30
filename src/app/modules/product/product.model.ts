@@ -14,6 +14,7 @@ const productSchema = new Schema<IProduct>(
     image: { type: String, required: true },
     price: { type: Number, required: true },
     status: { type: String, enum: status, required: true },
+    userEmail: { type: String },
     description: { type: String, required: true },
     keyFeatures: {
       type: {
@@ -34,7 +35,7 @@ const productSchema = new Schema<IProduct>(
         name: { type: String, required: true },
         individualRating: { type: Number, required: true },
         comment: { type: String, required: true },
-        date: { type: Date, required: true },
+        date: { type: Date },
       },
     ],
   },

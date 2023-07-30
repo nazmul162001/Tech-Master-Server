@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose'
 import { RequestHandler } from 'express-serve-static-core'
 import httpStatus from 'http-status'
 import catchAsync from '../../../shared/catchAsync'
@@ -13,6 +13,7 @@ import {
 } from './product.constant'
 import { paginationFields } from '../../../constants/pagination'
 import { IProduct, IReview } from './product.interface'
+import Product from './product.model'
 
 // create a new product
 const createProduct: RequestHandler = catchAsync(
@@ -74,40 +75,54 @@ const getSingleProduct: RequestHandler = catchAsync(
 // Add product review
 const addProductReview: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const productId = req.params.id;
-    const { name, individualRating, comment } = req.body;
+    const productId = req.params.id
+    const { name, individualRating, comment } = req.body
 
-    const product = await productService.getSingleProduct(productId);
+    const product = await productService.getSingleProduct(productId)
 
     if (!product) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+      throw new ApiError(httpStatus.NOT_FOUND, 'Product not found')
     }
 
     // Make sure product.reviews is defined before pushing the new review
     if (!product.reviews) {
-      product.reviews = [];
+      product.reviews = []
     }
 
     // Add the review to the product's reviews array
-    const newReview: IReview = { name , individualRating, comment };
-    product.reviews.push(newReview);
+    const newReview: IReview = { name, individualRating, comment }
+    product.reviews.push(newReview)
 
     // Save the updated product with the new review
-    await productService.addProductReview(productId, newReview);
+    await productService.addProductReview(productId, newReview)
 
-    
     sendResponse<IProduct>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Review added successfully!',
       data: product,
-    });
+    })
   }
-);
+)
+
+// Create a new collection and copy the data from the Product collection
+const copyProductToMypc: RequestHandler = catchAsync(async (req, res) => {
+  const { id } = req.body
+
+  // Call the service function to copy the product to 'mypc' collection
+  await productService.copyProductToMypc(id)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product data copied to "mypc" collection successfully!',
+  })
+})
 
 export const ProductController = {
   createProduct,
   getProducts,
   getSingleProduct,
-  addProductReview
+  addProductReview,
+  copyProductToMypc,
 }

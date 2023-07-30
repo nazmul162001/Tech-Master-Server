@@ -1,5 +1,5 @@
 import ApiError from '../../../errors/ApiError'
-import { Document, Types } from 'mongoose'
+import mongoose, { Document, Types } from 'mongoose'
 import {
   IPriceFilters,
   IProduct,
@@ -7,7 +7,6 @@ import {
   IReview,
 } from './product.interface'
 import httpStatus from 'http-status'
-import User from './product.model'
 import { IPaginationOptions } from '../../../interfaces/paginations'
 import { IGenericResponse } from '../../../interfaces/common'
 import { paginationHelper } from '../../../helpers/paginationHelper'
@@ -162,9 +161,37 @@ const addProductReview = async (
   }
 }
 
+// Check if the provided ID exists in the Product collection
+const checkProductExists = async (productId: string): Promise<boolean> => {
+  try {
+    const product = await Product.findById(productId)
+    return !!product // Return true if the product is found, false otherwise
+  } catch (error) {
+    throw error
+  }
+}
+
+const copyProductToMypc = async (productId: string): Promise<void> => {
+  try {
+    // Check if the product exists in the Product collection
+    const product = await Product.findById(productId)
+    if (!product) {
+      throw new Error('Product not found')
+    }
+
+    // Create a new collection 'mypc' and save the product data in it
+    const Mypc = mongoose.model('Mypc', Product.schema)
+    await Mypc.create(product.toObject())
+  } catch (error) {
+    throw error
+  }
+}
+
 export const productService = {
   createProduct,
   getProducts,
   getSingleProduct,
   addProductReview,
+  checkProductExists,
+  copyProductToMypc,
 }
