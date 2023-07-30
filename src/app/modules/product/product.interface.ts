@@ -18,7 +18,6 @@ export type IProduct = {
   reviews?: IReview[]
   _id?: string
   data?: Date
-  userEmail?: string
 }
 
 export type IProductFilter = {

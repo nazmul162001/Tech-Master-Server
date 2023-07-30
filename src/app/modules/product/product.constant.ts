@@ -31,5 +31,5 @@ export const categoriesArray: ICategories[] = [
 ];
 export const status: IStatus[] = ['In Stock', 'Out Of Stock'];
 
-
+export const pcBuildFilterableFields = ['searchTerm', 'userEmail'];
 export const PriceSearchableFields = ['maxPrice', 'minPrice']

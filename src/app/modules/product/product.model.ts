@@ -14,7 +14,6 @@ const productSchema = new Schema<IProduct>(
     image: { type: String, required: true },
     price: { type: Number, required: true },
     status: { type: String, enum: status, required: true },
-    userEmail: { type: String, default: '' },
     description: { type: String, required: true },
     keyFeatures: {
       type: {

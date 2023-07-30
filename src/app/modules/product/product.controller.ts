@@ -106,23 +106,22 @@ const addProductReview: RequestHandler = catchAsync(
 )
 
 // Create a new collection and copy the data from the Product collection
-const copyProductToMypc: RequestHandler = catchAsync(async (req, res) => {
-  const { id } = req.body
+// const copyProductToMypc: RequestHandler = catchAsync(async (req, res) => {
+//   const { id } = req.body
 
-  // Call the service function to copy the product to 'mypc' collection
-  await productService.copyProductToMypc(id)
+//   // Call the service function to copy the product to 'mypc' collection
+//   await productService.copyProductToMypc(id)
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Product data copied to "mypc" collection successfully!',
-  })
-})
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Product data copied to "mypc" collection successfully!',
+//   })
+// })
 
 export const ProductController = {
   createProduct,
   getProducts,
   getSingleProduct,
   addProductReview,
-  copyProductToMypc,
 }
