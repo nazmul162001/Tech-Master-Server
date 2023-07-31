@@ -18,13 +18,18 @@ const pcBuild_model_1 = require("./pcBuild.model");
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const http_status_1 = __importDefault(require("http-status"));
 const createPcBuild = (pcBuildData) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log('pcBuild = ', pcBuildData)
+    // console.log(pcBuildData?.product)
+    // console.log('pcBuild = ', pcBuildData?.userEmail)
     const existingProduct = yield pcBuild_model_1.PcBuild.findOne({
         $and: [
             { userEmail: pcBuildData === null || pcBuildData === void 0 ? void 0 : pcBuildData.userEmail },
             { product: pcBuildData === null || pcBuildData === void 0 ? void 0 : pcBuildData.product },
         ],
     });
+    if (existingProduct) {
+        // If a matching PC build already exists, throw an error
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Already Added this product');
+    }
     let pcBuildAllData = null;
     // Start the transaction
     const session = yield mongoose_1.default.startSession();
