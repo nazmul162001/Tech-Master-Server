@@ -5,11 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const product_route_1 = require("../modules/product/product.route");
+const pcBuild_route_1 = require("../modules/pcBuild/pcBuild.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
         path: '/products',
         route: product_route_1.ProductRoutes,
+    },
+    {
+        path: '/pcbuild',
+        route: pcBuild_route_1.PcBuild,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

@@ -96,20 +96,19 @@ const addProductReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     });
 }));
 // Create a new collection and copy the data from the Product collection
-const copyProductToMypc = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.body;
-    // Call the service function to copy the product to 'mypc' collection
-    yield product_service_1.productService.copyProductToMypc(id);
-    (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: 'Product data copied to "mypc" collection successfully!',
-    });
-}));
+// const copyProductToMypc: RequestHandler = catchAsync(async (req, res) => {
+//   const { id } = req.body
+//   // Call the service function to copy the product to 'mypc' collection
+//   await productService.copyProductToMypc(id)
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Product data copied to "mypc" collection successfully!',
+//   })
+// })
 exports.ProductController = {
     createProduct,
     getProducts,
     getSingleProduct,
     addProductReview,
-    copyProductToMypc,
 };

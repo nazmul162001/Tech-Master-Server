@@ -13,7 +13,6 @@ const productSchema = new mongoose_1.Schema({
     image: { type: String, required: true },
     price: { type: Number, required: true },
     status: { type: String, enum: product_constant_1.status, required: true },
-    userEmail: { type: String, default: '' },
     description: { type: String, required: true },
     keyFeatures: {
         type: {

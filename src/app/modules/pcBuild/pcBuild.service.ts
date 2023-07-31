@@ -7,7 +7,8 @@ import httpStatus from 'http-status'
 const createPcBuild = async (
   pcBuildData: IPCBuild
 ): Promise<IPCBuild | null> => {
-  // console.log('pcBuild = ', pcBuildData)
+  // console.log(pcBuildData?.product)
+  // console.log('pcBuild = ', pcBuildData?.userEmail)
 
   const existingProduct = await PcBuild.findOne({
     $and: [
@@ -15,6 +16,11 @@ const createPcBuild = async (
       { product: pcBuildData?.product },
     ],
   })
+
+  if (existingProduct) {
+    // If a matching PC build already exists, throw an error
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Already Added this product')
+  }
 
   let pcBuildAllData = null
 
@@ -42,6 +48,8 @@ const createPcBuild = async (
 
   return pcBuildAllData
 }
+
+
 
 export const PcBuildService = {
   createPcBuild,

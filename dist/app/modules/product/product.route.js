@@ -10,7 +10,6 @@ const router = express_1.default.Router();
 // create new product
 router.post('/', product_controller_1.ProductController.createProduct);
 router.post('/:id/reviews', product_controller_1.ProductController.addProductReview);
-router.post('/mypc', product_controller_1.ProductController.copyProductToMypc);
 router.get('/', product_controller_1.ProductController.getProducts);
 router.get('/:id', product_controller_1.ProductController.getSingleProduct);
 // router.delete('/:id', ProductController.deleteUser)
